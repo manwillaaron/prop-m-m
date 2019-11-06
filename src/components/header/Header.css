@@ -1,0 +1,34 @@
+.header{
+    height: 100px;
+    display: flex;
+    background: #023C40;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.title{
+    color: #E1FAF9;
+    display:flex;
+    align-self: center;
+}
+
+nav{
+    display: flex;
+    width: 35%;
+    display: flex; 
+    justify-content: space-around;
+    align-items: center;
+    font-size: 15px;
+}
+
+a{
+  text-decoration: none;  
+  color: #E1FAF9;
+  transition: .5s;
+}
+
+a:hover{
+    color: rgb(120, 160, 157)
+}

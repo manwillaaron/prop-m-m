@@ -1,0 +1,10 @@
+export const GET_PROPERTIES='GET_PROPERTIES';
+export const GET_PROPERTY_EXPENSES='GET_PROPERTY_EXPENSES'
+ 
+
+export const EDITING_EMAIL = 'EDITING_EMAIL'
+export const EDITING_PASSWORD = 'EDITING_PASSWORD'
+
+export const LOGIN = 'LOGIN'
+export const REGISTER = 'REGISTER'
+export const LOGOUT = 'LOGOUT'
