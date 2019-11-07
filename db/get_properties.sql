@@ -1,1 +1,2 @@
-select * from properties;
+select * from properties 
+where id = $1;

@@ -17,34 +17,23 @@ export function register(first_name, last_name, phone_number, email, password) {
       email,
       password
     })
-    .then(res => {
-      return res.data;
-    });
+    .then(res => res.data);
   return {
     type: REGISTER,
     payload: data
   };
 }
 export function login(email, password) {
-    console.log(email, password);
-    
-  let data = axios.post("/api/login", { email, password }).then(res => {
-      console.log(res.data);
-      
-    return res.data;
-  })
-//   .catch(err => {
-//       return res.status(404).send('username or password doesn\'t exist)
-//     })
+  let data = axios
+    .post("/api/login", { email, password })
+    .then(res => res.data);
   return {
     type: LOGIN,
     payload: data
   };
 }
 export function logout() {
-  let data = axios.delete("/api/logout").then(res => {
-    return res.data;
-  });
+  let data = axios.delete("/api/logout").then(res => res.data);
   return {
     type: LOGOUT,
     payload: data
@@ -69,7 +58,7 @@ export default function userDux(state = initialState, action) {
     case LOGOUT + "_PENDING":
       return { ...state, loading: true };
     case LOGOUT + "_FULFILLED":
-      return { ...state, loading: false, user: payload, loggedIn: false };
+      return { ...state, loading: false, user: {}, loggedIn: false };
     case LOGOUT + "_REJECTED":
       return { ...state, err: true, loading: false };
     default:

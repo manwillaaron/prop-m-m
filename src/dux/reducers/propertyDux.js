@@ -6,9 +6,8 @@ const initialState = {
     err: false
 }
 
-export function getProperties(req,res){
+export function getProperties(){
     let data = axios.get('/api/properties').then(res => {
-        console.log(res.data)
         return res.data
     })
     return {
@@ -19,8 +18,10 @@ export function getProperties(req,res){
 
 export default function propertyDux(state = initialState, action){
     let {type, payload } = action
+
+    
     switch(type){
-        case GET_PROPERTIES + "_FULFILLED":
+        case GET_PROPERTIES + "_FULFILLED":     
             return {...state, properties: payload}
         default:
             return state;

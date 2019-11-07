@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Dash from "./components/dash/Dash";
-// import TotalExpenses from './components/expenses/TotalExpenses'
+import TotalExpenses from "./components/expenses/TotalExpenses";
 // import PropExpenses from './components/expenses/PropExpenses'
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
@@ -20,8 +20,16 @@ export default function Routes() {
           </>
         )}
       />
+      <Route
+        path="/expenses"
+        component={() => (
+          <>
+            <Header />
+            <TotalExpenses />
+          </>
+        )}
+      />
       {/* <Route path='/expenses/:id' component={TotalExpenses} /> */}
-      {/* <Route path='/expenses' component={TotalExpenses} /> */}
       {/* <Route path='/property/expenses' component={PropExpenses} /> */}
       <Route
         path="/login"

@@ -1,41 +1,42 @@
-import React, { useState, useRef, useEffect } from "react";
-// import {Link} from 'react-router-dom'
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import "./Dash.css";
 import { getProperties } from "../../dux/reducers/propertyDux";
+import Property from "../property/Property";
 
-function Dash(props) {
-  props.getProperties()
-  // let [properties, setAll] = useState([]);
+const Dash = props => {
+  const allProperties = async () => {
+    await props.getProperties();
+  };
+  
+  useEffect(()=>{
+    if (props.user.id < 1) props.history.push("/login");
+  })
+  
   useEffect(() => {
-    console.log(props);
-    
-    // setAll((properties = props.properties));
-  }, []);
+    allProperties();
+  },[]);
 
-  // let proper = properties.map(prop => (
-  //   <div key={prop.id}>
-  //     <h1>{prop.address}</h1>
-  //     <img src={prop.picture} alt="house" />
-  //   </div>
-  // ));
   return (
     <div>
-      this is the dash
-      {/* {proper} */}
-      {/* <Link>Expenses</Link> */}
+      {props.properties.map((prop, i) => (
+        <Property key={i} prop={prop} />
+      ))}
     </div>
   );
-}
+};
 
 function mapStateToProps(state) {
   return {
-    properties: state.properties,
+    properties: state.properties.properties,
     user: state.user.user
-  }
+  };
 }
 
-export default connect(
-  mapStateToProps,
-  { getProperties }
-)(Dash);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { getProperties }
+  )(Dash)
+);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import "./Login.css";
 
@@ -7,13 +7,20 @@ import { login } from "../../dux/reducers/userDux";
 import { updateEmail, updatePassword } from "../../dux/reducers/editDux";
 
 function Login(props) {
-    
-    function login() {
-        console.log(props);
-    props.login(props.email, props.password)
-      .then( res => {props.history.push('/dash')})
+  useEffect(()=>{
+    console.log(props);
+    if(props.user.id > 0) {
+      props.history.push('/dash')}
+  },[])
+
+  const login = () => {
+    props
+      .login(props.email, props.password)
+      .then(res => {
+        props.history.push("/dash");
+      })
       .catch(err => alert("username or password not found"));
-  }
+  };
   return (
     <div>
       <input
@@ -31,13 +38,15 @@ function Login(props) {
 
 function mapStateToProps(state) {
   return {
-    currentUser: state.user,
+    user: state.user.user,
     email: state.editing.editEmail,
     password: state.editing.editPassword
   };
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  { login, updateEmail, updatePassword }
-)(Login));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { login, updateEmail, updatePassword }
+  )(Login)
+);

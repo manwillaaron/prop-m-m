@@ -19,9 +19,7 @@ module.exports = {
     res.sendStatus(200);
   },
 
-  async login(req, res) {
-      console.log('hit',req.body);
-      
+  async login(req, res) {      
       const db = req.app.get("db");
       let { email, password } = req.body;
       let sessionsUser = await db.get_user_by_email(email);
@@ -39,6 +37,6 @@ module.exports = {
 
   async logout(req, res) {
     await req.session.destroy();
-    res.status(200).send(req.session);
+    res.sendStatus(200)
   }
 };

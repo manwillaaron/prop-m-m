@@ -5,6 +5,7 @@ const session = require('express-session')
 const app = express()
 const pc = require('./controllers/propertyCtrl')
 const uc = require('./controllers/userCtrl')
+const ec = require('./controllers/expenseCtrl')
 const {SERVER_PORT, CONNECTION_STRING, SESSION_SECRET} = process.env
 const {userInit} = require('./customMiddleware/initSession')
 
@@ -33,3 +34,6 @@ app.get('/api/properties', pc.getUsersProperties)
 app.post('/api/register', uc.register)
 app.post('/api/login', userInit , uc.login)
 app.delete('/api/logout', uc.logout)
+
+///expense endpoints\\\\
+app.get('/api/expenses', ec.getUserExpenses)
