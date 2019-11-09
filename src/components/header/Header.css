@@ -24,11 +24,24 @@ nav{
 }
 
 a{
-  text-decoration: none;  
-  color: #E1FAF9;
-  transition: .5s;
+    text-decoration: none;  
+    color: #E1FAF9;
+    transition: .5s;
+}
+
+.link{
+    background: transparent;
+    border: none;
+    text-decoration: none;  
+    color: #E1FAF9;
+    transition: .5s;
 }
 
 a:hover{
     color: rgb(120, 160, 157)
+}
+
+.link:hover{
+    color: rgb(120, 160, 157)
+
 }

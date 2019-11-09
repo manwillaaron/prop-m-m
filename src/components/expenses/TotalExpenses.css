@@ -1,0 +1,15 @@
+section {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+    align-self: center;
+
+}
+label{
+    display: flex;
+    align-items: center;
+}
+
+#item-container{
+    border-bottom:1px solid lightslategray;
+}

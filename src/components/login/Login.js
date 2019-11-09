@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import "./Login.css";
 
 import { connect } from "react-redux";
@@ -7,11 +7,11 @@ import { login } from "../../dux/reducers/userDux";
 import { updateEmail, updatePassword } from "../../dux/reducers/editDux";
 
 function Login(props) {
-  useEffect(()=>{
-    console.log(props);
-    if(props.user.id > 0) {
-      props.history.push('/dash')}
-  },[])
+  useEffect(() => {
+    if (props.user.id > 0) {
+      props.history.push("/dash");
+    }
+  }, []);
 
   const login = () => {
     props
@@ -22,16 +22,23 @@ function Login(props) {
       .catch(err => alert("username or password not found"));
   };
   return (
-    <div>
-      <input
-        onChange={e => props.updateEmail(e.target.value)}
-        placeholder="email"
-      />
-      <input
-        onChange={e => props.updatePassword(e.target.value)}
-        placeholder="password"
-      />
-      <button onClick={() => login()}>Login</button>
+    <div className="login-back">
+      <div>
+        <h1>Login</h1>
+        <form id="login-container">
+          <input
+            onChange={e => props.updateEmail(e.target.value)}
+            placeholder="email"
+          />
+          <input
+            onChange={e => props.updatePassword(e.target.value)}
+            placeholder="password"
+          />
+          <button onClick={() => login()}>Login</button>
+        </form>
+      </div>
+      <div />
+      <div />
     </div>
   );
 }
