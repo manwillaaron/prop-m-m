@@ -1,2 +1,2 @@
-select user_id from properties
+select * from properties
 where property_id = $1;

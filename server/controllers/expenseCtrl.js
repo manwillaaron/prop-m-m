@@ -1,3 +1,18 @@
+let monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
 module.exports = {
   async getUserExpenses(req, res) {
     const db = req.app.get("db");
@@ -8,19 +23,37 @@ module.exports = {
 
   async getMonthPropExpenses(req, res) {
     const db = req.app.get("db");
-    const { pId } = req.params;
-    const { month, year } = req.body;
     const { id } = req.session.user;
-    const now = now()
-    const propertysUser = await db.get_propertys_user_id(pId);
-    if (propertysUser[0] !== id){
-      return res.status(404).send("this is not your property")
-    }
-    const propertyExpenses = await db.get_property_expenses(pId)
-     console.log(now)
-     console.log(propertyExpenses[0].date);
-     
-     
+    let { month, year, pId } = req.params;
 
+    let d = new Date();
+    let defaultMonth = month;
+    let defaultYear = year;
+    if (month === "todays") {
+      defaultMonth = monthNames[d.getMonth()].slice(0, 3);
+    }
+    if (year === "date") {
+      defaultYear = d.getFullYear();
+    }
+
+    const propertysUser = await db.get_propertys_user_id(+pId);
+    if (propertysUser[0].id !== id)
+      return res.status(404).send("this is not your property");
+
+    let propertyExpenses = await db.get_property_expenses(+pId);
+    propertyExpenses.forEach(ex => {
+     
+    });
+
+    const filtered = propertyExpenses.filter(ex => {
+        let newDate = ex.date
+        .toString()
+        .split("T")[0]
+        .split(" ");
+      ex.date = `${newDate[1]}-${newDate[3]}`
+      return ex.date === `${defaultMonth}-${defaultYear}`
+      }
+    );
+    res.status(200).send(filtered);
   }
 };
