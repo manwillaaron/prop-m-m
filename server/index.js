@@ -37,3 +37,4 @@ app.delete('/api/logout', uc.logout)
 
 ///expense endpoints\\\\
 app.get('/api/expenses', ec.getUserExpenses)
+app.get('/api/monthly/expenses/:pId/:month/:year', ec.getMonthPropExpenses)

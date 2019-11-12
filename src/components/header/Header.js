@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../dux/reducers/userDux";
 
+
 function Header(props) {
   function userCheck() {
     if (!props.user || !props.user.id) {
