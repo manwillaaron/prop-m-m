@@ -2,68 +2,22 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Dash from "./components/dash/Dash";
 import TotalExpenses from "./components/expenses/TotalExpenses";
-import PropExpenses from './components/expenses/PropExpenses'
+import PropExpenses from "./components/expenses/PropExpenses";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Home from "./components/home/Home";
-import Header from "./components/header/Header";
+import AddExpense from "./components/expenses/AddExpense";
 
 export default function Routes() {
   return (
     <Switch>
-      <Route
-        path="/dash"
-        component={() => (
-          <>
-            <Header />
-            <Dash />
-          </>
-        )}
-      />
-      <Route
-        path="/expenses"
-        component={() => (
-          <>
-            <Header />
-            <TotalExpenses />
-          </>
-        )}
-      />
-      {/* <Route path='/expenses/:id' component={TotalExpenses} /> */}
-      <Route path='/property/expenses/:propId' component={()=>
-        <>
-        <Header />
-        <PropExpenses/>
-        </>
-        } />
-      <Route
-        path="/login"
-        component={() => (
-          <>
-            <Header />
-            <Login />
-          </>
-        )}
-      />
-      <Route
-        path="/signup"
-        component={() => (
-          <>
-            <Header />
-            <Register />
-          </>
-        )}
-      />
-      <Route
-        path="/"
-        exact
-        component={() => (
-          <>
-            <Header />
-            <Home />
-          </>
-        )}
-      />
+      <Route path="/dash" component={Dash} />
+      <Route path="/add/expense/:propId" component={AddExpense} />
+      <Route path="/expenses" component={TotalExpenses} />
+      <Route path="/property/expenses/:propId" component={PropExpenses} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Register} />
+      <Route path="/" exact component={Home} />
     </Switch>
   );
 }

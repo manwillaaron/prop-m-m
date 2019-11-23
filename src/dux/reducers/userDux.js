@@ -8,14 +8,15 @@ const initialState = {
   loading: false
 };
 
-export function register(first_name, last_name, phone_number, email, password) {
+export function register(first_name, last_name, phone_number, email,  password, passCheck) {
   let data = axios
     .post("/api/register", {
       first_name,
       last_name,
       phone_number,
       email,
-      password
+      password,
+      passCheck
     })
     .then(res => res.data);
   return {

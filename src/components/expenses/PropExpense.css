@@ -1,3 +1,35 @@
-#hilightedButton{
+#highlightedButton{
     background: chartreuse;
 }
+
+.month-button{
+    display: flex;
+    flex-direction: row;
+}
+
+#highlightedButton-yr{
+    background: chartreuse
+}
+
+.loader {
+    border: 16px solid #f3f3f3; 
+    border-top: 16px solid #3498db; 
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top:50%;
+    left:45%
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+ #property-expense-container {   -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);}

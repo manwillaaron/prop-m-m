@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import "./Login.css";
-
 import { connect } from "react-redux";
 import { login } from "../../dux/reducers/userDux";
 import { updateEmail, updatePassword } from "../../dux/reducers/editDux";
+import Swal from 'sweetalert2'
 
 function Login(props) {
   useEffect(() => {
@@ -19,13 +19,13 @@ function Login(props) {
       .then(res => {
         props.history.push("/dash");
       })
-      .catch(err => alert("username or password not found"));
+      .catch(err => Swal.fire(err.response.data));
   };
   return (
     <div className="login-back">
       <div>
+        <section id="login-container">
         <h1>Login</h1>
-        <form id="login-container">
           <input
             onChange={e => props.updateEmail(e.target.value)}
             placeholder="email"
@@ -35,7 +35,7 @@ function Login(props) {
             placeholder="password"
           />
           <button onClick={() => login()}>Login</button>
-        </form>
+        </section>
       </div>
       <div />
       <div />
@@ -52,8 +52,5 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { login, updateEmail, updatePassword }
-  )(Login)
+  connect(mapStateToProps, { login, updateEmail, updatePassword })(Login)
 );
