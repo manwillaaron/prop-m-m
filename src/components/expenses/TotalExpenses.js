@@ -1,15 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "./TotalExpenses.css";
 import { getUserExpenses } from "../../dux/reducers/expenseDux";
+import Axios from "axios";
+import Buttons from "./Buttons";
 
 function TotalExpenses(props) {
-  const get = async () => {
+  const [sessionUser, setUser] = useState({})
+  const getUExpenses = async () => {
     await props.getUserExpenses();
   };
 
   useEffect(() => {
-    get();
+    Axios.get('/api/user').then(res=>{
+      getUExpenses()
+      setUser({...res.data})
+    })
+
   }, []);
 
   const total = props.expenses.reduce((acc, ex) => {
@@ -17,8 +24,11 @@ function TotalExpenses(props) {
     return (acc += +amount);
   }, 0);
 
+console.log(sessionUser);
+
   return (
     <div>
+      <Buttons/>
       <h1> Total Spent: {total}</h1>
       {props.expenses.map(ex => (
         <div id='item-container' key={ex.id}>
@@ -28,7 +38,6 @@ function TotalExpenses(props) {
             <section>
                 <label>Amount:</label><p>{ex.amount}</p>
             </section>
-            <hb />
         </div>
       ))}
     </div>

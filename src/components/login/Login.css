@@ -4,6 +4,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    /* background-image: url('https://www.avail.co/wp-content/uploads/2019/09/shutterstock_1033155406.jpg');
+    background-repeat: no-repeat; */
+    /* background-size: cover; */
 }
 input {
     border:rgb(1, 23, 24) solid .5px;
@@ -11,11 +14,14 @@ input {
 }
 
 #login-container{
-    height: 120px;
+    height: 200px;
+    width: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
     border:rgb(1, 23, 24) solid 1px;
     padding: 70px;
+    background: rgb(115, 196, 202); ;
 }
