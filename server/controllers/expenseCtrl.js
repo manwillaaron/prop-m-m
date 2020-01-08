@@ -12,20 +12,10 @@ let monthNames = [
   "November",
   "December"
 ];
-
-
-
-
-
-
-
-
-
-
 require("dotenv").config();
 const { GOOGLE_APPLICATION_CREDENTIALS, PROJECT_ID } = process.env;
 const vision = require("@google-cloud/vision");
-const {sorting} = require('./filterFns/filterTotal')
+const { sorting } = require("./filterFns/filterTotal");
 
 module.exports = {
   async getUserExpenses(req, res) {
@@ -68,21 +58,30 @@ module.exports = {
     res.status(200).send(filtered);
   },
 
-  async addExpense(req, res) {  
+  async addExpense(req, res) {
     const db = req.app.get("db");
-     const { id } = req.session.user;
-
-    const { store, description, image, } = req.body
-    const {propertyId} = req.params
-
+    const { store, description, url } = req.body;
     const client = new vision.ImageAnnotatorClient({
       PROJECT_ID,
       GOOGLE_APPLICATION_CREDENTIALS
     });
-    const [result] = await client.textDetection(image);
-    let amount = sorting(result.textAnnotations)
-    if(!amount) return res.status(400).send('Could not find total. Take another picture or enter manually.')
-    amount = +amount.slice(1)
+    const [result] = await client.textDetection(url);
+    let amount = sorting(result.textAnnotations);
+    if (!amount) {
+      return res
+        .status(400)
+        .send("Could not find total. Take another picture or enter manually.");
+    }
+    if (amount.includes("$")) {
+      amount = amount.slice(1);
+    }
+    res.status(200).send(amount.toString());
+  },
+  async addExpenseNoImage(req, res) {
+    const db = req.app.get("db");
+    const { id } = req.session.user;
+    const { amount, store, description } = req.body;
+    const { propertyId } = req.params;
     let expenses = await db.add_expense([
       amount,
       store,
@@ -90,21 +89,14 @@ module.exports = {
       +id,
       +propertyId
     ]);
-    
     res.status(200).send(expenses);
-  },
- async addExpenseNoImage(req,res){
-  const db = req.app.get("db");
-     const { id } = req.session.user;
-     const {amount, store, description} = req.body
-     const {propertyId} = req.params
-     let expenses = await db.add_expense([
-      amount,
-      store,
-      description,
-      +id,
-      +propertyId
-    ]);
-    res.status(200).send(expenses)
   }
 };
+
+// let expenses = await db.add_expense([
+//   amount,
+//   store,
+//   description,
+//   +id,
+//   +propertyId
+// ]);
