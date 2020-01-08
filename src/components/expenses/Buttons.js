@@ -25,14 +25,14 @@ function Buttons({ getFilteredProperties }) {
   let years = [...Array(30)]
     .map((el, i) => i + 1999)
     .filter(
-      el =>
+      (el, i) =>
         el <= date.getFullYear() - yearsIncDec &&
         el > date.getFullYear() - yearsIncDec - 10
     );
 
   return (
     <div className="month-buttons">
-      <main className='filter-container'>
+      <main className="filter-container">
         <div>
           <h5>Filter Results</h5>
           {monthA.map(mth => (
@@ -50,7 +50,7 @@ function Buttons({ getFilteredProperties }) {
             </button>
           ))}
         </div>
-        <br/>
+        <br />
         <div>
           {years.map(yr => (
             <button

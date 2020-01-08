@@ -57,8 +57,8 @@ app.get("/api/user", userInit, uc.getUser);
 ///expense endpoints\\\\
 app.get("/api/expenses", ec.getUserExpenses);
 app.get("/api/monthly/expenses/:pId/:month/:year", ec.getMonthPropExpenses);
-app.post("/api/expense/:propertyId", ec.addExpense);
-app.post('/api/expense/noimage/:propertyId', ec.addExpenseNoImage)
+app.post("/api/expense", ec.addExpense);
+app.post('/api/new/receipt/:propertyId', ec.addExpenseNoImage)
 
 //////////
 
@@ -68,7 +68,7 @@ app.post("/api/image", vc.getImageData);
 app.get('/api/signs3', (req, res) => {
   aws.config = {
     region: 'us-west-1',
-    accessKeyId: AWS_ACCESS_KEY_ID,
+    accessKeyId: AWS_ACCESS_KEY_ID, 
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
   };
 

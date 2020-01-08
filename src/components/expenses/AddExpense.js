@@ -7,27 +7,29 @@ import { withRouter } from "react-router-dom";
 import Dropzone from "react-dropzone";
 import { GridLoader } from "react-spinners";
 import { v4 as randomString } from "uuid";
+import Swal from "sweetalert2";
 
 function AddExpense(props) {
-  const [state, handleChange] = useState({
+  let [state, handleChange] = useState({
     store: "",
     amount: "",
-    description: ""
+    description: "",
+    isUploading: false,
+    url1: "http://via.placeholder.com/200x200"
   });
-  let [isUploading, toggleUploading] = useState(false);
-  const [images, fn] = useState([]);
-  let [url1, setPicture] = useState("http://via.placeholder.com/200x200");
-  const [value, setValue] = useState("");
 
- function getSignedRequest ([file]) {
-    toggleUploading(!isUploading);
-    const fileName = `${randomString()}-${file.name.replace(/\s/g, '-')}`;
+  function getSignedRequest([file]) {
+    handleChange({
+      ...state,
+      isUploading: true
+    });
+    const fileName = `${randomString()}-${file.name.replace(/\s/g, "-")}`;
     axios
-      .get('/api/signs3', {
+      .get("/api/signs3", {
         params: {
-          'file-name': fileName,
-          'file-type': file.type,
-        },
+          "file-name": fileName,
+          "file-type": file.type
+        }
       })
       .then(response => {
         const { signedRequest, url } = response.data;
@@ -36,101 +38,116 @@ function AddExpense(props) {
       .catch(err => {
         console.log(err);
       });
-  };
+  }
 
- function uploadFile (file, signedRequest, url) {
+  function uploadFile(file, signedRequest, url) {
     const options = {
       headers: {
-        'Content-Type': file.type,
-      },
+        "Content-Type": file.type
+      }
     };
     axios
       .put(signedRequest, file, options)
       .then(response => {
-        toggleUploading(isUploading=false);
-        setPicture(url);
+        handleChange({ ...state, url1: url, isUploading:true });
       })
       .catch(err => {
-        toggleUploading(!isUploading);
-        console.log(err);        
+        handleChange((state.isUploading = false));
+        console.log(err);
       });
-  };
-
-  function submitReceipt() {
-    console.log(props.match.params.id);
-    const { description, store, amount, url } = state;
-    if(amount>0){
-      axios
-      .post(`/api/expense/noimage/${props.match.params.propId}`, {
-        store,
-        amount,
-        description
-      })
-      .then(res => {
-        console.log(res.data);
-      });
-    }else {
     axios
-      .post(`/api/expense/${props.match.params.propId}`, {
-        store,
-        description,
+      .post("/api/expense", {
         url
       })
       .then(res => {
         console.log(res.data);
+        handleChange({
+          ...state,
+          amount: res.data,
+          isUploading: false,
+          url1: url
+        });
+      })
+      .catch(err => {
+        Swal.fire(err.response.data);
+        handleChange({
+          ...state,
+          isUploading: false
+        });
       });
+  }
+
+  function submitReceipt() {
+    console.log({ props }, props.match.params.id);
+    const { description, store, amount, url } = state;
+    if (+amount > 0) {
+      axios
+        .post(`/api/new/receipt/${props.match.params.propId}`, {
+          store,
+          amount,
+          description,
+          url
+        })
+        .then(res => {
+          Swal.fire("Receipt input success");
+        });
+    } else {
+      Swal.fire("Please upload an Image or enter an amount.");
     }
   }
+
   return (
     <div className="add-expense-form">
-  
-        <img
+      <img
         style={{
           width: 100,
           height: 100,
-          position: 'relative'}}
-           src={url1} alt="" width="450px" />
+          position: "relative"
+        }}
+        src={state.url1}
+        alt=""
+        width="450px"
+      />
 
-        <Dropzone
-          id='dropzone'
-          onDropAccepted={getSignedRequest}
-          accept="image/*"
-          multiple={false}
-        >
-          <div>
-            {isUploading ? <GridLoader /> : <p>Drop File or Click Here</p>}
-          </div>
-        </Dropzone>
-     
-        <input
-          placeholder="store"
-          name="store"
-          value={state.store}
-          onChange={e =>
-            handleChange({ ...state, [e.target.name]: e.target.value })
-          }
-        />
-        <input
-          placeholder="amount"
-          name="amount"
-          value={state.amount}
-          onChange={e =>
-            handleChange({ ...state, [e.target.name]: e.target.value })
-          }
-        />
-        <input
-          placeholder="description"
-          name="description"
-          value={state.description}
-          onChange={e =>
-            handleChange({ ...state, [e.target.name]: e.target.value })
-          }
-        />
-        <button onClick={() => submitReceipt()}>Add expense</button>
-        <button onClick={() => props.toggleForm()}>cancel</button>
-      </div>
+      <Dropzone
+        id="dropzone"
+        onDropAccepted={getSignedRequest}
+        accept="image/*"
+        multiple={false}
+      >
+        <div>
+          {state.isUploading ? <GridLoader /> : <p>Drop File or Click Here</p>}
+        </div>
+      </Dropzone>
+
+      <input
+        placeholder="store"
+        name="store"
+        value={state.store}
+        onChange={e =>
+          handleChange({ ...state, [e.target.name]: e.target.value })
+        }
+      />
+      <input
+        placeholder="amount"
+        name="amount"
+        value={`$${state.amount}`}
+        onChange={e =>
+          handleChange({ ...state, [e.target.name]: e.target.value })
+        }
+      />
+      <input
+        placeholder="description"
+        name="description"
+        value={state.description}
+        onChange={e =>
+          handleChange({ ...state, [e.target.name]: e.target.value })
+        }
+      />
+      <button onClick={() => submitReceipt()}>Add expense</button>
+      <button onClick={() => props.toggleForm()}>cancel</button>
+    </div>
   );
 }
-
 
 export default withRouter(connect(null, { addReceipt })(AddExpense));

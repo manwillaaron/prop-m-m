@@ -33,7 +33,7 @@ function PropExpenses(props) {
 
   return (
     <div>
-      {addExpense ? <AddExpense toggleForm={toggleForm}/> : null}
+      {addExpense ? <AddExpense toggleForm={toggleForm} /> : null}
       <div id={addExpense ? "property-expense-container" : null}>
         <button onClick={() => toggleForm(!addExpense)}>Add an Expense</button>
         <Buttons getFilteredProperties={getFilteredProperties} />
